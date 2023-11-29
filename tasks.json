@@ -1,0 +1,39 @@
+{
+    "tasks": [
+      {
+        "id": 1,
+        "title": "Learn Vue",
+        "isFav": false,
+        "completed": true,
+        "notes": "I put this as done because is the only framework taht I know but there are tons of things to learn yet. I'm still learning."
+      },
+      {
+        "id": 2,
+        "title": "Learn React",
+        "completed": false,
+        "isFav": true,
+        "notes": "Look at Net Ninja courses."
+      },
+      {
+        "id": 3,
+        "title": "Learn CSS",
+        "completed": false,
+        "isFav": true,
+        "notes": ""
+      },
+      {
+        "id": 4,
+        "title": "Fix copilot git",
+        "completed": false,
+        "isFav": true,
+        "notes": ""
+      },
+      {
+        "id": 5,
+        "title": "Look at courses to buy",
+        "completed": false,
+        "isFav": true,
+        "notes": ""
+      }
+    ]
+  }
