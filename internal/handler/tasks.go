@@ -1,14 +1,26 @@
 package handler
 
 import (
+	"backend-server/internal/model"
+	"backend-server/internal/repository"
+
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"sync"
 
 	"github.com/gorilla/mux"
 )
 
-func getTasksHandler(w http.ResponseWriter, r *http.Request) {
+// TaskList structure to hold a list of tasks
+type TaskList struct {
+	Tasks []model.Task `json:"tasks"`
+	mu    sync.Mutex
+}
+
+var taskList TaskList
+
+func GetTasksHandler(w http.ResponseWriter, r *http.Request) {
 	taskList.mu.Lock()
 	defer taskList.mu.Unlock()
 
@@ -16,7 +28,7 @@ func getTasksHandler(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(taskList)
 }
 
-func getTaskHandler(w http.ResponseWriter, r *http.Request) {
+func GetTaskHandler(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	taskID := vars["id"]
 
@@ -34,11 +46,11 @@ func getTaskHandler(w http.ResponseWriter, r *http.Request) {
 	http.NotFound(w, r)
 }
 
-func createTaskHandler(w http.ResponseWriter, r *http.Request) {
+func CreateTaskHandler(w http.ResponseWriter, r *http.Request) {
 	taskList.mu.Lock()
 	defer taskList.mu.Unlock()
 
-	var newTask Task
+	var newTask model.Task
 	err := json.NewDecoder(r.Body).Decode(&newTask)
 	if err != nil {
 		http.Error(w, "Bad Request", http.StatusBadRequest)
@@ -49,13 +61,13 @@ func createTaskHandler(w http.ResponseWriter, r *http.Request) {
 	newTask.ID = len(taskList.Tasks) + 1
 	taskList.Tasks = append(taskList.Tasks, newTask)
 
-	saveTasks()
+	repository.TaskRepository.CreateTask(newTask)
 
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(newTask)
 }
 
-func updateTaskHandler(w http.ResponseWriter, r *http.Request) {
+func UpdateTaskHandler(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	taskID := vars["id"]
 
@@ -85,7 +97,7 @@ func updateTaskHandler(w http.ResponseWriter, r *http.Request) {
 	http.NotFound(w, r)
 }
 
-func patchTaskHandler(w http.ResponseWriter, r *http.Request) {
+func PatchTaskHandler(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	taskID := vars["id"]
 
@@ -126,7 +138,7 @@ func patchTaskHandler(w http.ResponseWriter, r *http.Request) {
 	http.NotFound(w, r)
 }
 
-func deleteTaskHandler(w http.ResponseWriter, r *http.Request) {
+func DeleteTaskHandler(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	taskID := vars["id"]
 
@@ -148,7 +160,7 @@ func deleteTaskHandler(w http.ResponseWriter, r *http.Request) {
 	http.NotFound(w, r)
 }
 
-func deleteTasksHandler(w http.ResponseWriter, r *http.Request) {
+func DeleteTasksHandler(w http.ResponseWriter, r *http.Request) {
 	taskList.mu.Lock()
 	defer taskList.mu.Unlock()
 

@@ -1,42 +1,27 @@
 package main
 
 import (
-	"backend-server/internal/model"
+	"backend-server/internal/handler"
+
 	"fmt"
 	"log"
 	"net/http"
-	"sync"
 	"time"
 
 	"github.com/gorilla/mux"
-
-	"backend-go/internal/model"
 )
-
-// TaskList structure to hold a list of tasks
-type TaskList struct {
-	Tasks []model.Task `json:"tasks"`
-	mu    sync.Mutex
-}
-
-var taskList TaskList
-
-func init() {
-	// Load tasks from JSON file on startup
-	loadTasks()
-}
 
 func main() {
 	r := mux.NewRouter()
 
 	// Endpoints
-	r.HandleFunc("/tasks", getTasksHandler).Methods("GET")
-	r.HandleFunc("/task/{id}", getTaskHandler).Methods("GET")
-	r.HandleFunc("/task", createTaskHandler).Methods("POST")
-	r.HandleFunc("/task/{id}", updateTaskHandler).Methods("PUT")
-	r.HandleFunc("/task/{id}", patchTaskHandler).Methods("PATCH")
-	r.HandleFunc("/task/{id}", deleteTaskHandler).Methods("DELETE")
-	r.HandleFunc("/tasks", deleteTasksHandler).Methods("DELETE")
+	r.HandleFunc("/tasks", handler.GetTasksHandler).Methods("GET")
+	r.HandleFunc("/task/{id}", handler.GetTaskHandler).Methods("GET")
+	r.HandleFunc("/task", handler.CreateTaskHandler).Methods("POST")
+	r.HandleFunc("/task/{id}", handler.UpdateTaskHandler).Methods("PUT")
+	r.HandleFunc("/task/{id}", handler.PatchTaskHandler).Methods("PATCH")
+	r.HandleFunc("/task/{id}", handler.DeleteTaskHandler).Methods("DELETE")
+	r.HandleFunc("/tasks", handler.DeleteTasksHandler).Methods("DELETE")
 
 	// Start the server
 	serverAddr := ":8080"

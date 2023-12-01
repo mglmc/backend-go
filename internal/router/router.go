@@ -4,6 +4,7 @@ package router
 
 import (
 	"backend-server/internal/repository"
+	"backend-server/internal/router/handlers"
 
 	"github.com/gorilla/mux"
 )

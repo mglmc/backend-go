@@ -6,14 +6,21 @@ import (
 	"os"
 
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-func (db *LocalDB) connectDB() (*mongo.Client, error) {
+func (db *LocalDB) ConnectDB() (*mongo.Client, error) {
+	serverAPI := options.ServerAPI(options.ServerAPIVersion1)
 	mongoURI := os.Getenv("MONGODB_URI")
-	client, err := mongo.NewClient(options.Client().ApplyURI(mongoURI))
+
+	opts := options.Client().ApplyURI(mongoURI).SetServerAPIOptions(serverAPI)
+
+	client, err := mongo.NewClient(opts)
 	if err != nil {
 		return nil, err
 	}
+
 	err = client.Connect(context.Background())
 	if err != nil {
 		return nil, err
