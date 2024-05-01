@@ -2,14 +2,12 @@
 
 package repository
 
-import "backend-go/internal/model"
-
-// TaskRepository is an interface for database operations related to tasks.
-type TaskRepository interface {
+// Database is an interface for database operations related to tasks.
+type Database interface {
 	ConnectDB() error
-	GetAllTasks() ([]model.Task, error)
-	GetTaskByID(id int) (*model.Task, error)
-	CreateTask(task *model.Task) error
-	UpdateTask(task *model.Task) error
-	DeleteTask(id int) error
+	// GetAllTasks() ([]model.Task, error)
+	// GetTaskByID(id int) (*model.Task, error)
+	// CreateTask(task *model.Task) error
+	// UpdateTask(task *model.Task) error
+	// DeleteTask(id int) error
 }

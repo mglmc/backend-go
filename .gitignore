@@ -1,68 +1,50 @@
-# Binaries, plugins, libs
-*.exe
-*.exe~
-*.dll
-*.so
-*.dylib
+# Compiled binaries
+**/*.exe
+**/*.dll
+**/*.so
+**/*.dylib
+**/*.test
+**/*.out
 
-# Test binary, build with 'go test -c'
-*.test
+# Go specific
+**/vendor
+**/go.sum
+**/go.mod
 
-# Output of the go coverage tool, specifically when used with LiteIDE
-*.out
-
-# Dependency directories
-vendor/
-
-# IDE files
-.idea/
+# IDE/Editor folders
+**/.idea
+**/.vscode
 
 # Log files
-*.log
+**/*.log
 
 # OS generated files
-.DS_Store
-.DS_Store?
-._*
-.Spotlight-V100
-.Trashes
-ehthumbs.db
-Thumbs.db
+**/.DS_Store
+**/Thumbs.db
 
-# GoLand files
-.idea/
+# Build artifacts
+**/cmd/server/main.exe
 
-# Compiled Object files, Static and Dynamic libs (Shared Objects)
-*.o
-*.a
-*.s
-*.so
-
-# Folders
-_obj
-_test
-
-# Architecture specific extensions/prefixes
-*.[568vq]
-[568vq].out
-
-*.cgo1.go
-*.cgo2.c
-_cgo_defun.c
-_cgo_gotypes.go
-_cgo_export.*
-
-_testmain.go
-
-*.exe
-*.test
-*.prof
-
-# MongoDB files
-mongod.lock
-storage.bson
-
-# Redis files
-dump.rdb
-
+# Environment variables
 .env
+
+# Test files
+/test/
+
+# Vendor folder
+/vendor/
+
+# Docker files
+.dockerignore
+Dockerfile
+docker-compose.yml
+
+# Deployment scripts
+/scripts/
+
+# Fly configuration
+/fly.toml
+/cmd/server/fly.toml
+
+# Web dist
+/static/

@@ -2,7 +2,6 @@ package handler
 
 import (
 	"backend-server/internal/model"
-	"backend-server/internal/repository"
 
 	"encoding/json"
 	"fmt"
@@ -25,7 +24,7 @@ func GetTasksHandler(w http.ResponseWriter, r *http.Request) {
 	defer taskList.mu.Unlock()
 
 	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(taskList)
+	// json.NewEncoder(w).Encode(taskList)
 }
 
 func GetTaskHandler(w http.ResponseWriter, r *http.Request) {
@@ -61,40 +60,40 @@ func CreateTaskHandler(w http.ResponseWriter, r *http.Request) {
 	newTask.ID = len(taskList.Tasks) + 1
 	taskList.Tasks = append(taskList.Tasks, newTask)
 
-	repository.TaskRepository.CreateTask(newTask)
+	// repository.TaskRepository.CreateTask(newTask)
 
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(newTask)
 }
 
 func UpdateTaskHandler(w http.ResponseWriter, r *http.Request) {
-	vars := mux.Vars(r)
-	taskID := vars["id"]
+	// vars := mux.Vars(r)
+	// taskID := vars["id"]
 
-	taskList.mu.Lock()
-	defer taskList.mu.Unlock()
+	// taskList.mu.Lock()
+	// defer taskList.mu.Unlock()
 
-	for i, task := range taskList.Tasks {
-		if fmt.Sprint(task.ID) == taskID {
-			var updatedTask Task
-			err := json.NewDecoder(r.Body).Decode(&updatedTask)
-			if err != nil {
-				http.Error(w, "Bad Request", http.StatusBadRequest)
-				return
-			}
+	// for i, task := range taskList.Tasks {
+	// 	if fmt.Sprint(task.ID) == taskID {
+	// 		var updatedTask Task
+	// 		err := json.NewDecoder(r.Body).Decode(&updatedTask)
+	// 		if err != nil {
+	// 			http.Error(w, "Bad Request", http.StatusBadRequest)
+	// 			return
+	// 		}
 
-			// Update the task
-			taskList.Tasks[i] = updatedTask
+	// 		// Update the task
+	// 		taskList.Tasks[i] = updatedTask
 
-			saveTasks()
+	// 		saveTasks()
 
-			w.Header().Set("Content-Type", "application/json")
-			json.NewEncoder(w).Encode(updatedTask)
-			return
-		}
-	}
+	// 		w.Header().Set("Content-Type", "application/json")
+	// 		json.NewEncoder(w).Encode(updatedTask)
+	// 		return
+	// 	}
+	// }
 
-	http.NotFound(w, r)
+	// http.NotFound(w, r)
 }
 
 func PatchTaskHandler(w http.ResponseWriter, r *http.Request) {
@@ -127,7 +126,7 @@ func PatchTaskHandler(w http.ResponseWriter, r *http.Request) {
 				taskList.Tasks[i].Notes = notes.(string)
 			}
 
-			saveTasks()
+			// saveTasks()
 
 			w.Header().Set("Content-Type", "application/json")
 			json.NewEncoder(w).Encode(taskList.Tasks[i])
@@ -150,7 +149,7 @@ func DeleteTaskHandler(w http.ResponseWriter, r *http.Request) {
 			// Remove the task
 			taskList.Tasks = append(taskList.Tasks[:i], taskList.Tasks[i+1:]...)
 
-			saveTasks()
+			// saveTasks()
 
 			w.WriteHeader(http.StatusNoContent)
 			return
@@ -167,7 +166,7 @@ func DeleteTasksHandler(w http.ResponseWriter, r *http.Request) {
 	// Clear all tasks
 	taskList.Tasks = nil
 
-	saveTasks()
+	// saveTasks()
 
 	w.WriteHeader(http.StatusNoContent)
 }
